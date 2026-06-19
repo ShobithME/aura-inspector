@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  --flame: #ff6b00;
+  --firered: #ff2d20;
+  --ember: #ffc857;
+  --void: #050302;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--void);
+  color: #f5ede4;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: var(--font-body);
+  position: relative;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(255, 107, 0, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0604;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--flame), var(--firered));
+  border-radius: 4px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Background ---------- */
+
+.bg-void-grid {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255, 107, 0, 0.12), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 110%, rgba(255, 45, 32, 0.08), transparent 60%),
+    linear-gradient(rgba(255, 107, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 107, 0, 0.03) 1px, transparent 1px);
+  background-size: auto, auto, 48px 48px, 48px 48px;
+  background-color: var(--void);
+}
+
+/* ---------- Ember particles ---------- */
+
+.ember-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.ember-particle {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 200, 87, 0.95),
+    rgba(255, 107, 0, 0.4) 60%,
+    transparent 100%
+  );
+  filter: blur(0.4px);
+  animation: rise linear infinite;
+  will-change: transform, opacity;
+}
+
+.smoke-layer {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(40, 20, 10, 0.5), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(30, 10, 5, 0.45), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(20, 8, 4, 0.4), transparent 50%);
+  filter: blur(40px);
+  animation: flicker 8s ease-in-out infinite;
+}
+
+/* ---------- Glass panels ---------- */
+
+.glass-panel {
+  background: linear-gradient(145deg, rgba(20, 12, 8, 0.65), rgba(10, 6, 4, 0.55));
+  border: 1px solid rgba(255, 107, 0, 0.25);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 0 0 1px rgba(255, 107, 0, 0.06) inset,
+    0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.glow-flame {
+  box-shadow: 0 0 24px rgba(255, 107, 0, 0.35), 0 0 70px rgba(255, 45, 32, 0.15);
+}
+
+.text-glow {
+  text-shadow: 0 0 18px rgba(255, 107, 0, 0.55), 0 0 50px rgba(255, 45, 32, 0.25);
+}
+
+.hud-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--flame);
+}
+
+/* ---------- Scanner / scanline ---------- */
+
+.scanline-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scanline-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 200, 87, 0.9), transparent);
+  box-shadow: 0 0 18px rgba(255, 200, 87, 0.8);
+  animation: scanline 2.2s ease-in-out infinite;
+}
+
+/* ---------- Grain texture ---------- */
+
+.grain-texture {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes rise {
+  0%   { transform: translateY(0) translateX(0);    opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(-110vh) translateX(20px); opacity: 0; }
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
